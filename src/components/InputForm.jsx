@@ -1,13 +1,14 @@
 import { useState } from "react";
 import Button from "./Button";
+let newId = 0;
 export default function InputForm() {
   const [activeTab, setActiveTab] = useState("Expense");
   const [category, setCategory] = useState("");
   const [inputValue, setInputValue] = useState({
-    id: 1,
     amount: "",
-    category: "choose",
+    category: "",
     date: "",
+    type: "Expense",
   });
   const expenseCategories = [
     "Education",
@@ -22,6 +23,10 @@ export default function InputForm() {
   const incomeCategories = ["Salary", "Dividend", "Interest", "Royalty"];
   function handleTabClick(value) {
     // console.log(value);
+    setInputValue((prevValue) => ({
+      ...prevValue,
+      type: value,
+    }));
     setActiveTab(value);
   }
   function handleChange(e) {
@@ -29,12 +34,14 @@ export default function InputForm() {
   }
   function handleAdd() {
     console.log("Adding...", inputValue);
+    //After save reset value
+    setInputValue({ amount: "", category: "", date: "", type });
   }
   const categories =
     activeTab === "Expense" ? expenseCategories : incomeCategories;
 
   const categoryList = categories.map((category) => (
-    <option key={category} value={inputValue}>
+    <option key={category} value={category}>
       {category}
     </option>
   ));
@@ -52,13 +59,21 @@ export default function InputForm() {
         >
           <div className="flex divide-x divide-slate-400/20 overflow-hidden rounded-md bg-white text-[0.8125rem] font-medium leading-5 text-slate-700 shadow-sm ring-1 ring-slate-700/10 mt-6">
             <div
-              className="cursor-pointer text-center flex-1 px-4 py-2 hover:bg-slate-50 hover:text-slate-900 active"
+              className={`cursor-pointer text-center flex-1 px-4 py-2 hover:bg-slate-50 hover:text-slate-900 ${
+                inputValue.type === "Expense"
+                  ? "bg-teal-500 text-white hover:bg-teal-700 hover:text-white"
+                  : ""
+              }`}
               onClick={() => handleTabClick("Expense")}
             >
               Expense
             </div>
             <div
-              className="cursor-pointer text-center flex-1 px-4 py-2 hover:bg-slate-50 hover:text-slate-900"
+              className={`cursor-pointer text-center flex-1 px-4 py-2 hover:bg-slate-50 hover:text-slate-900 ${
+                inputValue.type === "Income"
+                  ? "bg-teal-500 text-white hover:bg-teal-700 hover:text-white"
+                  : ""
+              }`}
               onClick={() => handleTabClick("Income")}
             >
               Income
@@ -74,9 +89,10 @@ export default function InputForm() {
             </label>
             <div className="mt-2">
               <select
-                value={inputValue.category}
                 id="category"
                 name="category"
+                value={inputValue.category}
+                onChange={handleChange}
                 autoComplete="category-name"
                 className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-teal-600 sm:text-sm sm:leading-6"
               >
