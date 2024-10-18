@@ -1,17 +1,23 @@
-export default function Button({ type, className, children,target, href }) {
-    if (type === "submit") {
-      return (
-        <>
-          <button className={className} type={type}>
-            {children}
-          </button>
-        </>
-      );
-    }
+export default function Button({
+  onSmash,
+  type,
+  className,
+  children,
+  target,
+  href,
+}) {
+  if (type === "submit") {
     return (
-      <a href={href} className={className} target={target}>
-        {children}
-      </a>
+      <>
+        <button className={className} type={type} onClick={onSmash}>
+          {children}
+        </button>
+      </>
     );
   }
-   
+  return (
+    <a href={href} className={className} target={target}>
+      {children}
+    </a>
+  );
+}
