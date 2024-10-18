@@ -1,12 +1,12 @@
 import { useState } from "react";
 import Button from "./Button";
 let newId = 0;
-export default function InputForm() {
+export default function InputForm({ onSubmitValue }) {
   const [activeTab, setActiveTab] = useState("Expense");
   const [category, setCategory] = useState("");
   const [inputValue, setInputValue] = useState({
     amount: "",
-    category: "",
+    category: "choose",
     date: "",
     type: "Expense",
   });
@@ -33,9 +33,15 @@ export default function InputForm() {
     setInputValue({ ...inputValue, [e.target.name]: e.target.value });
   }
   function handleAdd() {
-    console.log("Adding...", inputValue);
+    // console.log("Adding...", inputValue);
     //After save reset value
-    setInputValue({ amount: "", category: "", date: "", type });
+    setInputValue({
+      amount: "",
+      category: "choose",
+      date: "",
+      type: "Expense",
+    });
+    onSubmitValue(inputValue);
   }
   const categories =
     activeTab === "Expense" ? expenseCategories : incomeCategories;
@@ -96,6 +102,9 @@ export default function InputForm() {
                 autoComplete="category-name"
                 className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-teal-600 sm:text-sm sm:leading-6"
               >
+                <option value="choose" disabled>
+                  Select Category
+                </option>
                 {categoryList}
               </select>
             </div>
