@@ -27,6 +27,9 @@ export default function InputForm() {
   function handleChange(e) {
     setInputValue({ ...inputValue, [e.target.name]: e.target.value });
   }
+  function handleAdd() {
+    console.log("Adding...", inputValue);
+  }
   const categories =
     activeTab === "Expense" ? expenseCategories : incomeCategories;
 
@@ -125,6 +128,7 @@ export default function InputForm() {
           </div>
 
           <Button
+            onSmash={handleAdd}
             type="submit"
             className="mt-6 rounded-md bg-teal-600 px-8 py-2 text-sm font-semibold text-white shadow-sm hover:bg-teal-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-600 w-full"
           >
