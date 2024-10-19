@@ -5,17 +5,22 @@ import Income from "./expenseSummary.jsx/Income";
 import InputForm from "./InputForm";
 
 export default function Main() {
-  const [transitions, setTransitions] = useState([]);
+  const [transactions, setTransaction] = useState([]);
   function submitValue(value) {
     // console.log(value,"data");
-    setTransitions([...transitions, value]);
+    setTransaction([...transactions, value]);
   }
-  const incomeValues = transitions.filter(
-    (transition) => transition.type === "Income"
+  const incomeValues = transactions.filter(
+    (transaction) => transaction.type === "Income"
   );
-  const expenseValues = transitions.filter(
-    (transition) => transition.type === "Expense"
+  const expenseValues = transactions.filter(
+    (transaction) => transaction.type === "Expense"
   );
+  function handleDelete(id) {
+    setTransaction((transactions) =>
+      transactions.filter((transaction) => transaction.id !== id)
+    );
+  }
   return (
     <>
       <main className="relative mx-auto mt-10 w-full max-w-7xl">
@@ -25,8 +30,8 @@ export default function Main() {
           <div className="lg:col-span-2">
             <AmountSummary />
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mt-8">
-              <Income transitions={incomeValues}/>
-              <Expense transitions={expenseValues}/>
+              <Income transactions={incomeValues} onDelete={handleDelete} />
+              <Expense transactions={expenseValues} onDelete={handleDelete} />
             </div>
           </div>
         </section>

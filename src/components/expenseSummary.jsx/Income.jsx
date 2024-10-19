@@ -6,8 +6,8 @@ import EditSvg from "../svg/EditSvg";
 import IncomeSvg from "../svg/IncomeSvg";
 import SettingSvg from "../svg/SettingSvg";
 
-export default function Income({ transitions }) {
-  console.log(transitions);
+export default function Income({ transactions, onDelete }) {
+  console.log(transactions);
   const [activeFilter, setActiveFilter] = useState(false);
   const [activeCategoryFilter, setActiveCategoryFilter] = useState(false);
 
@@ -19,16 +19,22 @@ export default function Income({ transitions }) {
     setActiveCategoryFilter(!activeCategoryFilter);
     console.log(activeCategoryFilter);
   }
-  const incomes = transitions.map((transition) => (
-    <div className="flex justify-between items-center py-2 relative group cursor-pointer" key={transition.id}>
+  function handleDelete(id) {
+    onDelete(id);
+  }
+  const incomes = transactions.map((transaction) => (
+    <div
+      className="flex justify-between items-center py-2 relative group cursor-pointer"
+      key={transaction.id}
+    >
       <div>
-           {/* <h5>{transition.id}</h5> */}
+        {/* <h5>{transaction.id}</h5> */}
         <h3 className="text-base font-medium leading-7 text-gray-600">
-          {transition.category}
+          {transaction.category}
         </h3>
-     
+
         <p className="text-xs text-gray-600">
-          {new Date(transition.date).toLocaleDateString("en-GB", {
+          {new Date(transaction.date).toLocaleDateString("en-GB", {
             day: "numeric",
             month: "long",
             year: "numeric",
@@ -36,11 +42,11 @@ export default function Income({ transitions }) {
         </p>
       </div>
       <div className="flex items-center gap-2">
-        <p className="text-base font-semibold text-gray-600 transition-all group-hover:-translate-x-14">
-          BDT {transition.amount}
+        <p className="text-base font-semibold text-gray-600 transaction-all group-hover:-translate-x-14">
+          BDT {transaction.amount}
         </p>
 
-        <div className="translate-x-5 group-hover:translate-x-0 opacity-0 group-hover:opacity-100 absolute right-0 top-1/2 -translate-y-1/2 transition-all">
+        <div className="translate-x-5 group-hover:translate-x-0 opacity-0 group-hover:opacity-100 absolute right-0 top-1/2 -translate-y-1/2 transaction-all">
           <button
             className="hover:text-teal-600"
             role="button"
@@ -49,9 +55,15 @@ export default function Income({ transitions }) {
             <EditSvg />
           </button>
 
-          <button className="hover:text-red-600" role="button" title="Delete">
+          <Button
+            type="submit"
+            className="hover:text-red-600"
+            role="button"
+            title="Delete"
+            onSmash={() => handleDelete(transaction.id)}
+          >
             <DeleteSvg />
-          </button>
+          </Button>
         </div>
       </div>
     </div>
@@ -94,7 +106,7 @@ export default function Income({ transitions }) {
                   <div className="py-1" role="none">
                     <a
                       href="#"
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-all"
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transaction-all"
                       role="menuitem"
                       tabIndex="-1"
                       id="menu-item-0"
@@ -103,7 +115,7 @@ export default function Income({ transitions }) {
                     </a>
                     <a
                       href="#"
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-all"
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transaction-all"
                       role="menuitem"
                       tabIndex="-1"
                       id="menu-item-0"
