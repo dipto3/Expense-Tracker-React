@@ -7,7 +7,7 @@ import IncomeSvg from "../svg/IncomeSvg";
 import SettingSvg from "../svg/SettingSvg";
 
 export default function Income({ transitions }) {
-  // console.log(transitions);
+  console.log(transitions);
   const [activeFilter, setActiveFilter] = useState(false);
   const [activeCategoryFilter, setActiveCategoryFilter] = useState(false);
 
@@ -20,11 +20,13 @@ export default function Income({ transitions }) {
     console.log(activeCategoryFilter);
   }
   const incomes = transitions.map((transition) => (
-    <div className="flex justify-between items-center py-2 relative group cursor-pointer">
+    <div className="flex justify-between items-center py-2 relative group cursor-pointer" key={transition.id}>
       <div>
+           {/* <h5>{transition.id}</h5> */}
         <h3 className="text-base font-medium leading-7 text-gray-600">
           {transition.category}
         </h3>
+     
         <p className="text-xs text-gray-600">
           {new Date(transition.date).toLocaleDateString("en-GB", {
             day: "numeric",

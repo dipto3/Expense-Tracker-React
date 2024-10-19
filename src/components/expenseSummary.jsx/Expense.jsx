@@ -6,7 +6,7 @@ import EditSvg from "../svg/EditSvg";
 import ExpenseSvg from "../svg/ExpenseSvg";
 import SettingSvg from "../svg/SettingSvg";
 
-export default function Expense({transitions}) {
+export default function Expense({ transitions }) {
   const [activeFilter, setActiveFilter] = useState(false);
   const [activeCategoryFilter, setActiveCategoryFilter] = useState(false);
 
@@ -19,16 +19,22 @@ export default function Expense({transitions}) {
     console.log(activeCategoryFilter);
   }
   const expenses = transitions.map((transition) => (
-    <div className="flex justify-between items-center py-2 relative group cursor-pointer">
+    <div
+      className="flex justify-between items-center py-2 relative group cursor-pointer"
+      key={transition.id}
+    >
       <div>
         <h3 className="text-base font-medium leading-7 text-gray-600">
           {transition.category}
         </h3>
-        <p className="text-xs text-gray-600">{new Date(transition.date).toLocaleDateString("en-GB", {
+        <h5>{transition.id}</h5>
+        <p className="text-xs text-gray-600">
+          {new Date(transition.date).toLocaleDateString("en-GB", {
             day: "numeric",
             month: "long",
             year: "numeric",
-          })}</p>
+          })}
+        </p>
       </div>
       <div className="flex items-center gap-2">
         <p className="text-base font-semibold text-gray-600 transition-all group-hover:-translate-x-14">
@@ -163,9 +169,7 @@ export default function Expense({transitions}) {
           </div>
         </div>
 
-        <div className="p-4 divide-y">
-         { expenses }
-        </div>
+        <div className="p-4 divide-y">{expenses}</div>
       </div>
     </>
   );

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Button from "./Button";
-let newId = 0;
+let newId = 1;
 export default function InputForm({ onSubmitValue }) {
   const [activeTab, setActiveTab] = useState("Expense");
   const [category, setCategory] = useState("");
@@ -34,6 +34,8 @@ export default function InputForm({ onSubmitValue }) {
   }
   function handleAdd() {
     // console.log("Adding...", inputValue);
+    const incrementId = { ...inputValue, id: newId++ };
+    // console.log(incrementId);
     //After save reset value
     setInputValue({
       amount: "",
@@ -41,7 +43,7 @@ export default function InputForm({ onSubmitValue }) {
       date: "",
       type: "Expense",
     });
-    onSubmitValue(inputValue);
+    onSubmitValue(incrementId);
   }
   const categories =
     activeTab === "Expense" ? expenseCategories : incomeCategories;
