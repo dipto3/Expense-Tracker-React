@@ -6,11 +6,26 @@ import InputForm from "./InputForm";
 
 export default function Main() {
   const [transactions, setTransaction] = useState([]);
+  const [editTransaction, setEditTransaction] = useState(null);
+
   // console.log(transactions);
+
   function submitValue(value) {
-    // console.log(value,"data");
-    setTransaction([...transactions, value]);
+    const transactionExists = transactions.find(
+      (transaction) => transaction.id === value.id
+    );
+
+    if (transactionExists) {
+      setTransaction(
+        transactions.map((transaction) =>
+          transaction.id === value.id ? value : transaction
+        )
+      );
+    } else {
+      setTransaction([...transactions, value]);
+    }
   }
+
   const incomeValues = transactions.filter(
     (transaction) => transaction.type === "Income"
   );
@@ -22,16 +37,26 @@ export default function Main() {
       transactions.filter((transaction) => transaction.id !== id)
     );
   }
+  function handleEdit(transaction) {
+    setEditTransaction(transaction);
+  }
   return (
     <>
       <main className="relative mx-auto mt-10 w-full max-w-7xl">
         <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          <InputForm onSubmitValue={submitValue} />
+          <InputForm
+            onSubmitValue={submitValue}
+            editTransaction={editTransaction}
+          />
 
           <div className="lg:col-span-2">
-            <AmountSummary transactions={transactions}/>
+            <AmountSummary transactions={transactions} />
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mt-8">
-              <Income transactions={incomeValues} onDelete={handleDelete} />
+              <Income
+                transactions={incomeValues}
+                onDelete={handleDelete}
+                onEdit={handleEdit}
+              />
               <Expense transactions={expenseValues} onDelete={handleDelete} />
             </div>
           </div>

@@ -1,5 +1,5 @@
 export default function AmountSummary({ transactions }) {
-  console.log(transactions);
+  // console.log(transactions);
   const totalIncome = transactions
     .filter((transaction) => transaction.type === "Income")
     .reduce((data, transaction) => data + Number(transaction.amount), 0);

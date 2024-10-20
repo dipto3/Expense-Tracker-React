@@ -1,15 +1,31 @@
 import { useState } from "react";
 import Button from "./Button";
 let newId = 1;
-export default function InputForm({ onSubmitValue }) {
+
+export default function InputForm({ onSubmitValue, editTransaction }) {
   const [activeTab, setActiveTab] = useState("Expense");
   const [category, setCategory] = useState("");
-  const [inputValue, setInputValue] = useState({
-    amount: "",
-    category: "choose",
-    date: "",
-    type: "Expense",
-  });
+
+  // Initialize with editTransaction or default values
+  const [inputValue, setInputValue] = useState(
+    () =>
+      editTransaction || {
+        amount: "",
+        category: "choose",
+        date: "",
+        type: "Expense",
+      }
+  );
+
+  // Check if we are adding a new transaction or editing
+  const [isAdd, setIsAdd] = useState(editTransaction === null);
+
+  // Sync the state when editTransaction changes
+  if (editTransaction && isAdd) {
+    setInputValue(editTransaction);
+    setIsAdd(false); // Now we know we're editing, not adding
+  }
+
   const expenseCategories = [
     "Education",
     "Food",
@@ -21,30 +37,41 @@ export default function InputForm({ onSubmitValue }) {
     "Telephone",
   ];
   const incomeCategories = ["Salary", "Dividend", "Interest", "Royalty"];
+
   function handleTabClick(value) {
-    // console.log(value);
     setInputValue((prevValue) => ({
       ...prevValue,
       type: value,
     }));
     setActiveTab(value);
   }
+
   function handleChange(e) {
     setInputValue({ ...inputValue, [e.target.name]: e.target.value });
   }
+
   function handleAdd() {
-    // console.log("Adding...", inputValue);
-    const incrementId = { ...inputValue, id: newId++ };
-    // console.log(incrementId);
-    //After save reset value
-    setInputValue({
-      amount: "",
-      category: "choose",
-      date: "",
-      type: "Expense",
-    });
-    onSubmitValue(incrementId);
+    if (isAdd) {
+      const incrementId = { ...inputValue, id: newId++ };
+      setInputValue({
+        amount: "",
+        category: "choose",
+        date: "",
+        type: "Expense",
+      });
+      onSubmitValue(incrementId);
+    } else {
+      const updatedTransaction = { ...editTransaction, ...inputValue };
+      onSubmitValue(updatedTransaction);
+      setInputValue({
+        amount: "",
+        category: "choose",
+        date: "",
+        type: "Expense",
+      });
+    }
   }
+
   const categories =
     activeTab === "Expense" ? expenseCategories : incomeCategories;
 
@@ -53,6 +80,7 @@ export default function InputForm({ onSubmitValue }) {
       {category}
     </option>
   ));
+
   return (
     <>
       <div className="p-6 py-8 bg-[#F9FAFB] border rounded-md">

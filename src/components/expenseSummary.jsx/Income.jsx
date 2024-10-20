@@ -6,7 +6,7 @@ import EditSvg from "../svg/EditSvg";
 import IncomeSvg from "../svg/IncomeSvg";
 import SettingSvg from "../svg/SettingSvg";
 
-export default function Income({ transactions, onDelete }) {
+export default function Income({ transactions, onDelete, onEdit}) {
   // console.log(transactions);
   const [activeFilter, setActiveFilter] = useState(false);
   const [activeCategoryFilter, setActiveCategoryFilter] = useState(false);
@@ -51,6 +51,7 @@ export default function Income({ transactions, onDelete }) {
             className="hover:text-teal-600"
             role="button"
             title="Edit Button"
+            onClick={() => onEdit(transaction)}
           >
             <EditSvg />
           </button>
