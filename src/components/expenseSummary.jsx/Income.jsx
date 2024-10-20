@@ -7,7 +7,7 @@ import IncomeSvg from "../svg/IncomeSvg";
 import SettingSvg from "../svg/SettingSvg";
 
 export default function Income({ transactions, onDelete }) {
-  console.log(transactions);
+  // console.log(transactions);
   const [activeFilter, setActiveFilter] = useState(false);
   const [activeCategoryFilter, setActiveCategoryFilter] = useState(false);
 
@@ -17,7 +17,7 @@ export default function Income({ transactions, onDelete }) {
   }
   function handleClickCategoryFilter() {
     setActiveCategoryFilter(!activeCategoryFilter);
-    console.log(activeCategoryFilter);
+    // console.log(activeCategoryFilter);
   }
   function handleDelete(id) {
     onDelete(id);

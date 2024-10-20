@@ -6,6 +6,7 @@ import InputForm from "./InputForm";
 
 export default function Main() {
   const [transactions, setTransaction] = useState([]);
+  // console.log(transactions);
   function submitValue(value) {
     // console.log(value,"data");
     setTransaction([...transactions, value]);
@@ -28,7 +29,7 @@ export default function Main() {
           <InputForm onSubmitValue={submitValue} />
 
           <div className="lg:col-span-2">
-            <AmountSummary />
+            <AmountSummary transactions={transactions}/>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mt-8">
               <Income transactions={incomeValues} onDelete={handleDelete} />
               <Expense transactions={expenseValues} onDelete={handleDelete} />
