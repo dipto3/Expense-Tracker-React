@@ -6,23 +6,36 @@ import EditSvg from "../svg/EditSvg";
 import IncomeSvg from "../svg/IncomeSvg";
 import SettingSvg from "../svg/SettingSvg";
 
-export default function Income({ transactions, onDelete, onEdit}) {
-  // console.log(transactions);
+export default function Income({ transactions, onDelete, onEdit }) {
+  // console.log(amountSort);
   const [activeFilter, setActiveFilter] = useState(false);
   const [activeCategoryFilter, setActiveCategoryFilter] = useState(false);
-
+  const [sortType, setSortType] = useState("lowToHigh");
   function handleClickAmountFilter() {
     setActiveFilter(!activeFilter);
     // console.log(activeFilter);
   }
   function handleClickCategoryFilter() {
     setActiveCategoryFilter(!activeCategoryFilter);
-    // console.log(activeCategoryFilter);
   }
   function handleDelete(id) {
     onDelete(id);
   }
-  const incomes = transactions.map((transaction) => (
+
+  function handleSort(sortType) {
+    setSortType(sortType);
+  }
+  const sortedIncomeValues = [...transactions].sort((a, b) => {
+    //  console.log(sortType);
+    if (sortType === "lowToHigh") {
+      return a.amount - b.amount;
+    } else if (sortType === "highToLow") {
+      return b.amount - a.amount;
+    }
+    return 0; // If no sorting is selected
+  });
+
+  const incomes = sortedIncomeValues.map((transaction) => (
     <div
       className="flex justify-between items-center py-2 relative group cursor-pointer"
       key={transaction.id}
@@ -105,24 +118,26 @@ export default function Income({ transactions, onDelete, onEdit}) {
                   tabIndex="-1"
                 >
                   <div className="py-1" role="none">
-                    <a
-                      href="#"
+                    <Button
+                      onSmash={() => handleSort("lowToHigh")}
+                      type="submit"
                       className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transaction-all"
                       role="menuitem"
                       tabIndex="-1"
                       id="menu-item-0"
                     >
                       Low to High
-                    </a>
-                    <a
-                      href="#"
+                    </Button>
+                    <Button
+                      onSmash={() => handleSort("highToLow")}
+                      type="submit"
                       className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transaction-all"
                       role="menuitem"
                       tabIndex="-1"
                       id="menu-item-0"
                     >
                       High to Low
-                    </a>
+                    </Button>
                   </div>
                 </div>
               )}

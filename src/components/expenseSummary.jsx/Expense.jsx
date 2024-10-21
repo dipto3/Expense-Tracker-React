@@ -9,6 +9,7 @@ import SettingSvg from "../svg/SettingSvg";
 export default function Expense({ transactions, onDelete, onEdit }) {
   const [activeFilter, setActiveFilter] = useState(false);
   const [activeCategoryFilter, setActiveCategoryFilter] = useState(false);
+  const [sortType, setSortType] = useState("lowToHigh");
 
   function handleClickAmountFilter() {
     setActiveFilter(!activeFilter);
@@ -21,7 +22,18 @@ export default function Expense({ transactions, onDelete, onEdit }) {
   function handleDelete(id) {
     onDelete(id);
   }
-  const expenses = transactions.map((transaction) => (
+  function handleSort(sortType) {
+    setSortType(sortType);
+  }
+  const sortedExpenseValues = [...transactions].sort((a, b) => {
+    if (sortType === "lowToHigh") {
+      return a.amount - b.amount;
+    } else if (sortType === "highToLow") {
+      return b.amount - a.amount;
+    }
+    return 0;
+  });
+  const expenses = sortedExpenseValues.map((transaction) => (
     <div
       className="flex justify-between items-center py-2 relative group cursor-pointer"
       key={transaction.id}
@@ -104,24 +116,26 @@ export default function Expense({ transactions, onDelete, onEdit }) {
               >
                 {activeFilter && (
                   <div className="py-1" role="none">
-                    <a
-                      href="#"
+                    <Button
+                      onSmash={() => handleSort("lowToHigh")}
+                      type="submit"
                       className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transaction-all"
                       role="menuitem"
                       tabIndex="-1"
                       id="menu-item-0"
                     >
                       Low to High
-                    </a>
-                    <a
-                      href="#"
+                    </Button>
+                    <Button
+                      onSmash={() => handleSort("highToLow")}
+                      type="submit"
                       className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transaction-all"
                       role="menuitem"
                       tabIndex="-1"
                       id="menu-item-0"
                     >
                       High to Low
-                    </a>
+                    </Button>
                   </div>
                 )}
               </div>
