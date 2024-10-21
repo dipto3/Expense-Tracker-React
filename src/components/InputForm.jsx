@@ -6,24 +6,22 @@ export default function InputForm({ onSubmitValue, editTransaction }) {
   const [activeTab, setActiveTab] = useState("Expense");
   const [category, setCategory] = useState("");
 
-  // Initialize with editTransaction or default values
   const [inputValue, setInputValue] = useState(
-    () =>
-      editTransaction || {
-        amount: "",
-        category: "choose",
-        date: "",
-        type: "Expense",
-      }
+    editTransaction || {
+      amount: "",
+      category: "choose",
+      date: "",
+      type: "Expense",
+    }
   );
 
-  // Check if we are adding a new transaction or editing
   const [isAdd, setIsAdd] = useState(editTransaction === null);
 
-  // Sync the state when editTransaction changes
   if (editTransaction && isAdd) {
+    // console.log(editTransaction,"check");
     setInputValue(editTransaction);
-    setIsAdd(false); // Now we know we're editing, not adding
+    setActiveTab(editTransaction.type);
+    setIsAdd(false);
   }
 
   const expenseCategories = [
@@ -51,6 +49,7 @@ export default function InputForm({ onSubmitValue, editTransaction }) {
   }
 
   function handleAdd() {
+
     if (isAdd) {
       const incrementId = { ...inputValue, id: newId++ };
       setInputValue({
@@ -61,16 +60,20 @@ export default function InputForm({ onSubmitValue, editTransaction }) {
       });
       onSubmitValue(incrementId);
     } else {
-      const updatedTransaction = { ...editTransaction, ...inputValue };
-      onSubmitValue(updatedTransaction);
+      // const updatedTransaction = { ...editTransaction, ...inputValue };
+      // console.log(updatedTransaction);
+      onSubmitValue({ ...inputValue, id: editTransaction.id });
       setInputValue({
         amount: "",
         category: "choose",
         date: "",
         type: "Expense",
       });
+
     }
   }
+
+  
 
   const categories =
     activeTab === "Expense" ? expenseCategories : incomeCategories;

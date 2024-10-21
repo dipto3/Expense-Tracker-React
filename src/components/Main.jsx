@@ -8,8 +8,6 @@ export default function Main() {
   const [transactions, setTransaction] = useState([]);
   const [editTransaction, setEditTransaction] = useState(null);
 
-  // console.log(transactions);
-
   function submitValue(value) {
     const transactionExists = transactions.find(
       (transaction) => transaction.id === value.id
