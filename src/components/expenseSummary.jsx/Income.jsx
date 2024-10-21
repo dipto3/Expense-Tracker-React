@@ -32,7 +32,7 @@ export default function Income({ transactions, onDelete, onEdit }) {
     } else if (sortType === "highToLow") {
       return b.amount - a.amount;
     }
-    return 0; // If no sorting is selected
+    return 0;
   });
 
   const incomes = sortedIncomeValues.map((transaction) => (

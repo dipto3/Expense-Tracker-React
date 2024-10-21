@@ -40,21 +40,6 @@ export default function Main() {
   function handleCancel() {
     setEditTransaction(null);
   }
-  // function handleAmountSort(sortType) {
-  //   // console.log(sortType);
-  //   setSortOrder(sortType);
-  // }
-
-  // const sortedIncomeValues = [...incomeValues].sort((a, b) => {
- 
-  //   if (sortOrder === "lowToHigh") {
-  //     return a.amount - b.amount;
-  //   } else if (sortOrder === "highToLow") {
-  //     return b.amount - a.amount;
-  //   }
-  //   return 0; // If no sorting is selected
-  // });
-  // console.log(sortedIncomeValues);
 
   return (
     <>
@@ -73,7 +58,6 @@ export default function Main() {
                 transactions={incomeValues}
                 onDelete={handleDelete}
                 onEdit={handleEdit}
-                // amountSort={handleAmountSort}
               />
               <Expense
                 transactions={expenseValues}
