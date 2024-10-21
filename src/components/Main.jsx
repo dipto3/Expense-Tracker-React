@@ -8,12 +8,8 @@ export default function Main() {
   const [transactions, setTransaction] = useState([]);
   const [editTransaction, setEditTransaction] = useState(null);
 
-  function submitValue(value) {
-    const transactionExists = transactions.find(
-      (transaction) => transaction.id === value.id
-    );
-
-    if (transactionExists) {
+  function submitValue(value, isEdit) {
+    if (isEdit) {
       setTransaction(
         transactions.map((transaction) =>
           transaction.id === value.id ? value : transaction
@@ -22,6 +18,8 @@ export default function Main() {
     } else {
       setTransaction([...transactions, value]);
     }
+
+    setEditTransaction(null);
   }
 
   const incomeValues = transactions.filter(
@@ -38,6 +36,10 @@ export default function Main() {
   function handleEdit(transaction) {
     setEditTransaction(transaction);
   }
+  function handleCancel() {
+    setEditTransaction(null);
+  }
+
   return (
     <>
       <main className="relative mx-auto mt-10 w-full max-w-7xl">
@@ -45,6 +47,7 @@ export default function Main() {
           <InputForm
             onSubmitValue={submitValue}
             editTransaction={editTransaction}
+            onCancel={handleCancel}
           />
 
           <div className="lg:col-span-2">
@@ -55,7 +58,11 @@ export default function Main() {
                 onDelete={handleDelete}
                 onEdit={handleEdit}
               />
-              <Expense transactions={expenseValues} onDelete={handleDelete} />
+              <Expense
+                transactions={expenseValues}
+                onDelete={handleDelete}
+                onEdit={handleEdit}
+              />
             </div>
           </div>
         </section>

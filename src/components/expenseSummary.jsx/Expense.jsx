@@ -6,7 +6,7 @@ import EditSvg from "../svg/EditSvg";
 import ExpenseSvg from "../svg/ExpenseSvg";
 import SettingSvg from "../svg/SettingSvg";
 
-export default function Expense({ transactions, onDelete }) {
+export default function Expense({ transactions, onDelete, onEdit }) {
   const [activeFilter, setActiveFilter] = useState(false);
   const [activeCategoryFilter, setActiveCategoryFilter] = useState(false);
 
@@ -49,6 +49,7 @@ export default function Expense({ transactions, onDelete }) {
             className="hover:text-teal-600"
             role="button"
             title="Edit Button"
+            onClick={() => onEdit(transaction)}
           >
             <EditSvg />
           </button>

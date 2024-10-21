@@ -2,7 +2,11 @@ import { useState } from "react";
 import Button from "./Button";
 let newId = 1;
 
-export default function InputForm({ onSubmitValue, editTransaction }) {
+export default function InputForm({
+  onSubmitValue,
+  editTransaction,
+  onCancel,
+}) {
   const [activeTab, setActiveTab] = useState("Expense");
   const [category, setCategory] = useState("");
 
@@ -15,13 +19,14 @@ export default function InputForm({ onSubmitValue, editTransaction }) {
     }
   );
 
-  const [isAdd, setIsAdd] = useState(editTransaction === null);
+  // const [isAdd, setIsAdd] = useState(editTransaction === null);
+  const [isEdit, setIsEdit] = useState(false);
 
-  if (editTransaction && isAdd) {
+  if (editTransaction && !isEdit) {
     // console.log(editTransaction,"check");
     setInputValue(editTransaction);
     setActiveTab(editTransaction.type);
-    setIsAdd(false);
+    setIsEdit(true);
   }
 
   const expenseCategories = [
@@ -48,9 +53,11 @@ export default function InputForm({ onSubmitValue, editTransaction }) {
     setInputValue({ ...inputValue, [e.target.name]: e.target.value });
   }
 
-  function handleAdd() {
 
-    if (isAdd) {
+  function handleAdd() {
+    if (isEdit) {
+      onSubmitValue(inputValue, true);
+    } else {
       const incrementId = { ...inputValue, id: newId++ };
       setInputValue({
         amount: "",
@@ -58,22 +65,23 @@ export default function InputForm({ onSubmitValue, editTransaction }) {
         date: "",
         type: "Expense",
       });
-      onSubmitValue(incrementId);
-    } else {
-      // const updatedTransaction = { ...editTransaction, ...inputValue };
-      // console.log(updatedTransaction);
-      onSubmitValue({ ...inputValue, id: editTransaction.id });
-      setInputValue({
-        amount: "",
-        category: "choose",
-        date: "",
-        type: "Expense",
-      });
-
+      onSubmitValue(incrementId, false);
+    }
+    // Reset form
+    handleCancel();
+  }
+  function handleCancel() {
+    setInputValue({
+      amount: "",
+      category: "choose",
+      date: "",
+      type: "Expense",
+    });
+    setIsEdit(false);
+    if (onCancel) {
+      onCancel();
     }
   }
-
-  
 
   const categories =
     activeTab === "Expense" ? expenseCategories : incomeCategories;
@@ -190,8 +198,17 @@ export default function InputForm({ onSubmitValue, editTransaction }) {
             type="submit"
             className="mt-6 rounded-md bg-teal-600 px-8 py-2 text-sm font-semibold text-white shadow-sm hover:bg-teal-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-600 w-full"
           >
-            Save
+            {isEdit ? "Update" : "Save"}
           </Button>
+          {isEdit && (
+            <Button
+              type="submit"
+              onSmash={handleCancel}
+              className="mt-6 rounded-md bg-red-600 px-8 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-600 w-full"
+            >
+              Cancel
+            </Button>
+          )}
         </form>
       </div>
     </>
