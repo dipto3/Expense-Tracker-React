@@ -7,7 +7,7 @@ import InputForm from "./InputForm";
 export default function Main() {
   const [transactions, setTransaction] = useState([]);
   const [editTransaction, setEditTransaction] = useState(null);
-  const [sortOrder, setSortOrder] = useState(null);
+
 
   function submitValue(value, isEdit) {
     if (isEdit) {
